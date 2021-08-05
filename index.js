@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const passport = require('passport')
 const passportLocal = require('./config/passport-local')
+const flash = require('connect-flash')
 
 app.use(express.urlencoded());
 
@@ -30,6 +31,7 @@ app.use(session({
         maxAge:(100*100*100)
     }
 }))
+app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(passport.setAuthUser)

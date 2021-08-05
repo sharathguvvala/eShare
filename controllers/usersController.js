@@ -4,14 +4,14 @@ module.exports.SignUp = function(req,res){
     if(req.isAuthenticated()){
         return res.redirect('/users/profile')
     }
-    return res.render('userSignUp', {title: "Sign Up"})
+    return res.render('userSignUp', {title: "Sign Up",signupmessage:req.flash('signup error')})
 }
 
 module.exports.SignIn = function(req,res){
     if(req.isAuthenticated()){
         return res.redirect('/users/profile')
     }
-    return res.render('userSignIn', {title: "Sign Up"})
+    return res.render('userSignIn', {title:'Sign In',signupmessage:req.flash('signup success'),signinmessage:req.flash('signin error')})
 }
 
 module.exports.create = function(req,res){
@@ -21,7 +21,7 @@ module.exports.create = function(req,res){
     User.findOne({email:req.body.email},function(err,user){
         if(err){
             console.log('Error in finding user in db');
-            return
+            return 
         }
         if(!user){
             username = req.body.username
@@ -33,10 +33,12 @@ module.exports.create = function(req,res){
                     console.log('Error in creating user in db');
                     return
                 }
+                req.flash('signup success','You have successfully signed up')
                 return res.redirect('/users/signin')
             })
         }
         else{
+            req.flash('signup error','User already exists')
             return res.redirect('/users/signup')
         }
     })

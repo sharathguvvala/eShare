@@ -3,18 +3,20 @@ const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
 
 const User = require('../models/user')
+
 passport.use(new LocalStrategy({
-    usernameField: 'email'},
-    async function(email,password,done){
-        await User.findOne({email:email}, function(err,user){
+    usernameField: 'email',passReqToCallback:true},
+    function(req,email,password,done){
+        User.findOne({email:email},async function(err,user){
             if(err){
                 console.log('Error in finding user')
                 return done(err)
             }
-            if(bcrypt.compare(password,user.password)){
-                console.log('Successfully logged In')
-                done(null,user)
+            if(!user || (await (bcrypt.compare(password,user.password))==false)){
+                return done(null,false,req.flash('signin error','Invalid Email-id/Password entered'))
             }
+            console.log('Successfully logged In')
+            return done(null,user)
         })
     }
 ))
