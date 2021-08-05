@@ -2,6 +2,15 @@ const express = require('express')
 const app = express()
 const port = process.env.port || 8000
 const expressLayouts = require('express-ejs-layouts')
+const db = require('./config/mongoose')
+const cookieParser = require('cookie-parser')
+const session = require('express-session')
+const passport = require('passport')
+const passportLocal = require('./config/passport-local')
+
+app.use(express.urlencoded());
+
+app.use(cookieParser());
 
 app.use(express.static('./assets'))
 
@@ -11,6 +20,19 @@ app.set('layout extractScripts',true)
 
 app.set('view engine','ejs')
 app.set('views','./views')
+
+app.use(session({
+    name:'interventus',
+    secret:'sharath',
+    saveUninitialized:false,
+    resave:false,
+    cookie:{
+        maxAge:(100*100*100)
+    }
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(passport.setAuthUser)
 
 app.use("/", require('./routes/index')) 
 
