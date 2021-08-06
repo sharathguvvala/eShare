@@ -1,5 +1,8 @@
 <h1>Sign In</h1>
-<% if(signinmessage.length>0){ %>
+<% if(signupmessage.length>0 || signinmessage.length>0){ %>
+    <div class="alert alert-success">
+        <%= signupmessage %>
+    </div>
     <div class="alert alert-success">
         <%= signinmessage %>
     </div>
