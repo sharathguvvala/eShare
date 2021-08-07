@@ -1,12 +1,4 @@
 <h1>Sign In</h1>
-<% if(signupmessage.length>0 || signinmessage.length>0){ %>
-    <div class="alert alert-success">
-        <%= signupmessage %>
-    </div>
-    <div class="alert alert-success">
-        <%= signinmessage %>
-    </div>
-<% } %>
 <form action="/users/create-session" method="POST">
     <input type="email" name="email" placeholder="Enter your email" required>
     <input type="password" name="password" placeholder="Enter your password" required>

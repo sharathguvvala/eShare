@@ -1,15 +1,4 @@
 <h1>Sign Up</h1>
-<% if(usernamemessage.length>0 || passwordmessage.length>0 || signupmessage.length>0){ %>
-    <div class="alert alert-error">
-        <%= usernamemessage %>
-    </div>
-    <div class="alert alert-error">
-        <%= passwordmessage %>
-    </div>
-    <div class="alert alert-error">
-        <%= signupmessage %>
-    </div>
-<% } %>
 <form action="/users/create" method="POST">
     <input type="text" name="username" placeholder="Enter your name" required>
     <input type="email" name="email" placeholder="Enter your email" required>

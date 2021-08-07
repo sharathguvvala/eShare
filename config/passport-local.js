@@ -13,7 +13,10 @@ passport.use(new LocalStrategy({
                 return done(err)
             }
             if(!user || (await (bcrypt.compare(password,user.password))==false)){
-                return done(null,false,req.flash('signin error','Invalid Email-id / Password entered'))
+                return done(null,false,req.flash('error','Invalid Email-id / Password entered'))
+            }      
+            if(user.confirmed==false){
+                return done(null,false,req.flash('info','Verify your Email-Id to login'))
             }
             console.log('Successfully logged In')
             return done(null,user)
