@@ -1,6 +1,10 @@
 const User = require('../models/user')
 const passport = require('passport')
 const verifyUser = require('../mailers/verifyUser')
+const verifyToken = require('../models/verifyTokens')
+const randomstring = require('randomstring')
+const forgotPassword = require('../models/forgotPassword')
+const resetPassword = require('../mailers/resetPassword')
 
 module.exports.SignUp = function(req,res){
     if(req.isAuthenticated()){
@@ -21,21 +25,31 @@ module.exports.create = function(req,res){
         req.flash('error','Password and Confirm Password should be same')
         return res.redirect('back');
     }
-    User.findOne({$or:[{email:req.body.email},{username:req.body.username}]},async function(err,user){
+    User.findOne({$or:[{email:req.body.email},{username:req.body.username}]},function(err,user){
         if(err){
             console.log('Error in finding user in db');
             return 
         }
         if(!user){
-            User.create(req.body,function(err,user){
+            User.create(req.body, function(err,user){
                 if(err){
                     console.log('Error in creating user in db');
                     return
                 }
-                verifyUser.verifyUser(user)
-                req.flash('success','You have successfully signed up')
-                req.flash('info','Please verify your Email-Id to signin')
-                return res.redirect('/users/signin')
+                var randomtoken = randomstring.generate(32)
+                console.log('Token:',randomtoken)
+                verifyToken.create({email:req.body.email,token:randomtoken},function(err,token){
+                    if(err){
+                        console.log('Error in creating a token')
+                        return
+                    }
+                    if(token){
+                        verifyUser.verifyUser(user,token)
+                        req.flash('info','Please verify your Email-Id to signin')
+                        return res.redirect('/users/signin')
+
+                    }
+                })
             })
         }
         else{
@@ -46,19 +60,122 @@ module.exports.create = function(req,res){
 }
 
 module.exports.verify = function(req,res){
-    console.log(req.params.id)
-    User.findById(req.params.id,function(err,user){
+    console.log(req.params.token)
+    verifyToken.findOne({token:req.params.token},function(err,token){
         if(err){
             console.log('Error in finding user',err)
             return
         }
-        if(!user){
+        if(!token){
             return res.redirect('/users/signup')
         }
-        user.confirmed=true
-        user.save()
-        return res.redirect('/users/signin')
-    }) 
+        User.findOne({email:token.email},async function(err,user){
+            if(err){
+                console.log('Error in finding user',err)
+                return
+            }
+            if(user){
+                user.confirmed=true
+                user.save()
+                await verifyToken.findOneAndDelete({token:token.token},function(err){
+                    console.log('Error in deleting token')
+                    return
+                })
+                req.flash('success','Your Email-Id has been verified, Please Sign In to continue')
+                return res.redirect('/users/signin')
+            }
+        })
+    })
+}
+
+module.exports.forgotpassword = function(req,res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile')
+    }
+    return res.render('forgotPassword',{title:"Forgot Password"})
+}
+
+module.exports.forgotpasswordform = function(req,res){
+    User.findOne({email:req.body.email},function(err,user){
+        if(err){
+            console.log('Error in finding user')
+            return
+        }
+        if(!user){
+            req.flash('info','No user exists with the Email-Id')
+            return res.redirect('/users/forgotPassword')
+        }
+        var randomtoken = randomstring.generate(64)
+        console.log('2',randomtoken)
+        forgotPassword.findOne({email:req.body.email},function(err,requesteduser){
+            if(err){
+                console.log('Error in finding user',err)
+                return
+            }
+            if(requesteduser){
+                req.flash('info','Already requested for reset password, kindly wait and request after 5 min')
+                return res.redirect('/users/signin')
+            }
+            forgotPassword.create({email:req.body.email,token:randomtoken},function(err,token){
+                if(err){
+                    console.log('Error in creating token',err)
+                }
+                if(token){
+                    resetPassword.resetPassword(user,token)
+                    /* resetpasswordUser(user,token) */
+                    req.flash('info','Check your mail for changing the password')
+                    return res.redirect('/users/signin')
+                }
+            })
+        })
+    })
+}
+
+module.exports.resetpassword = function(req,res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile')
+    }
+    console.log('1',req.params.token)
+    forgotPassword.findOne({token:req.params.token},function(err,token){
+        if(err){
+            console.log('Error in finding token',err)
+            return
+        }
+        console.log(token)
+        return res.render('resetPassword',{title:"Reset Password",token:token})
+    })
+}
+
+module.exports.resetpasswordform = function(req,res){
+    if(req.body.password!=req.body.confirm_password){
+        req.flash('error','Password and Confirm Password should be same')
+        return res.redirect('back');
+    }
+    forgotPassword.findOne({email:req.body.email},function(err,token){
+        if(err){
+            console.log('Error in finding token')
+            return
+        }
+        console.log(token)
+        if(token){
+            User.findOne({email:token.email},async function(err,user){
+                if(err){
+                    console.log('Error in finding user')
+                    return
+                }
+                user.password = req.body.password
+                user.save()
+                await forgotPassword.findOneAndDelete({email:token.email},function(err){
+                    if(err){
+                        console.log('Error in deleting token')
+                        return
+                    }
+                })
+                req.flash('success','Your Password has been changed, Please Sign In to continue')
+                return res.redirect('/users/signin')
+            })
+        }
+    })
 }
 
 module.exports.createSession = function(req,res){

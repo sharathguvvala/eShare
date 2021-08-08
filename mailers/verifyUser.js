@@ -1,11 +1,11 @@
 const nodeMailer = require('../config/nodemailer')
 
-module.exports.verifyUser = function(user){
+module.exports.verifyUser = function(user,token){
     console.log(user.email)
-    let htmlTemplate = nodeMailer.renderTemplate({user:user}, '/verifyUser.ejs')
+    let htmlTemplate = nodeMailer.renderTemplate({user:user,token:token}, '/verifyUser.ejs')
     nodeMailer.transporter.sendMail({
        from: 'eShare@gmail.com',
-       to: user.email,
+       to: token.email,
        subject: "Email Verification",
        html: htmlTemplate
     }, (err, info) => {

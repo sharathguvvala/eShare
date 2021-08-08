@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu');
 body{
     font-family: 'Ubuntu', sans-serif;
+	color: #000;
+	background-color: #d6d6d6;
 }
-#wrapper {
+#wrapper{
 	width: 40%;
 	margin: 3% auto;
 	position: relative;
@@ -10,10 +12,9 @@ body{
 	z-index: 1;
 	box-shadow: 0px 15px 20px 0px rgba(128, 128, 128, 0.76);
     border-radius: 20px;
-	backdrop-filter: blur(.3rem);
-    background: linear-gradient(to right bottom, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.15));
+	background-color: #fff;
 }
-#wrapper:before {
+#wrapper:before{
 	content: "";
 	position: absolute;
 	top: 0;
@@ -25,26 +26,26 @@ body{
 #wrapper h3{
     text-align: center;
 }
-.signin{
-    padding: 5%;
+.signin, .forgotpassword, .resetpassword{
+    margin: 5%;
 }
 .signup{
-    padding: 5%;
+    margin: 0 5%;
 }
-label {
+label{
 	display: block
 }
-.form-group {
+.form-group{
 	position: relative;
-	margin-bottom: 15px;
+	margin-bottom: 20px;
 }
-.form-group label {
+.form-group label{
 	display: block;
 	margin-bottom: 6px;
 	font-size: 16px;
 	margin-left: 14px;
 }
-input {
+input{
 	width: 100%;
 	background: rgba(0, 0, 0, 0.42);
 	outline: none;
@@ -56,32 +57,43 @@ input {
 	font-size: 16px;
 	transition: background 0.5s ease-in-out;
 }
-span#showpwd {
+span#showpwd{
     position: absolute;
     top: 45px;
     right: 16px;
     cursor: pointer;
 }
-input:focus {
+input:focus{
 	background: rgba(0, 0, 0, 0.6);
 }
-input[type="submit"] {
+input[type="submit"]{
 	background: #1061EE;
 	cursor: pointer;
 }
-.hr {
+.form-group input[type="submit"]{
+	margin: 20px 0;
+}
+.hr{
 	height: 1.4px;
 	background: rgba(128, 128, 128, 0.51);
 	border-radius: 15px;
 	margin-bottom: 30px;
 }
-#signin, #signup, #froget-pass {
+#signin, #signup, #froget-pass{
 	text-align: center;
 	margin: 0;
 	display: block;
 }
 a:hover{
 	text-decoration: none;
+}
+#emailnone{
+	pointer-events: none;
+}
+@media (max-width:1500px){
+	#wrapper{
+		margin: 3% auto;
+	}
 }
 @media (max-width:800px){
     #wrapper{
@@ -94,4 +106,10 @@ a:hover{
         width: 90%;
         margin: 15% auto;
     }
+	.form-group label{
+		font-size: 14px;
+	}
+	span#showpwd{
+		top: 42px;
+	}
 }
