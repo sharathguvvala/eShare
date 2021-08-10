@@ -12,14 +12,15 @@ module.exports.SignUp = function(req,res){
         req.flash('info','You have already Signed In')
         return res.redirect('/users/profile')
     }
-    return res.render('userSignUp', {title: "Sign Up"})
+    return res.render('userSignUp', {title: "Sign Up",csrfToken:req.csrfToken()})
 }
 
 module.exports.SignIn = function(req,res){
     if(req.isAuthenticated()){
+        req.flash('info','You have already Signed In')
         return res.redirect('/users/profile')
     }
-    return res.render('userSignIn', {title:'Sign In'})
+    return res.render('userSignIn', {title:'Sign In',csrfToken:req.csrfToken()})
 }
 
 module.exports.create = function(req,res){
@@ -68,7 +69,8 @@ module.exports.verify = function(req,res){
             return
         }
         if(!token){
-            return res.redirect('/users/signup')
+            ReadableStream.flash('info','Link has expired, kindly request again.')
+            return res.redirect('/users/resendverify')
         }
         User.findOne({email:token.email},async function(err,user){
             if(err){
@@ -96,7 +98,7 @@ module.exports.resendverify = function(req,res){
         req.flash('info','You have already Signed In')
         return res.redirect('/users/profile')
     }
-    return res.render('resendVerify',{title:'Email Verification'})
+    return res.render('resendVerify',{title:'Email Verification',csrfToken:req.csrfToken()})
 }
 
 module.exports.resendverifytoken = function(req,res){
@@ -139,7 +141,7 @@ module.exports.forgotpassword = function(req,res){
     if(req.isAuthenticated()){
         return res.redirect('/users/profile')
     }
-    return res.render('forgotPassword',{title:"Forgot Password"})
+    return res.render('forgotPassword',{title:"Forgot Password",csrfToken:req.csrfToken()})
 }
 
 module.exports.forgotpasswordform = function(req,res){
@@ -189,7 +191,7 @@ module.exports.resetpassword = function(req,res){
             return
         }
         console.log(token)
-        return res.render('resetPassword',{title:"Reset Password",token:token})
+        return res.render('resetPassword',{title:"Reset Password",token:token,csrfToken:req.csrfToken()})
     })
 }
 
