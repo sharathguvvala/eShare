@@ -4,6 +4,8 @@ const bcrypt = require('bcrypt')
 
 const User = require('../models/user')
 
+const usersController = require('../controllers/usersController')
+
 passport.use(new LocalStrategy({
     usernameField: 'email',passReqToCallback:true},
     function(req,email,password,done){
@@ -14,10 +16,10 @@ passport.use(new LocalStrategy({
             }
             if(!user || (await (bcrypt.compare(password,user.password))==false)){
                 return done(null,false,req.flash('error','Invalid Email-id / Password entered'))
-            }      
+            } 
             if(user.confirmed==false){
-                return done(null,false,req.flash('info','Verify your Email-Id to login'))
-            }
+                return done(null,false,req.flash('error','Verify your Email-Id to Sign In')) 
+            }  
             console.log('Successfully logged In')
             return done(null,user)
         })

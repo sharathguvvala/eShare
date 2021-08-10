@@ -1,6 +1,7 @@
 const User = require('../models/user')
 const passport = require('passport')
 const verifyUser = require('../mailers/verifyUser')
+const resendverify = require('../mailers/resendVerify')
 const verifyToken = require('../models/verifyTokens')
 const randomstring = require('randomstring')
 const forgotPassword = require('../models/forgotPassword')
@@ -8,6 +9,7 @@ const resetPassword = require('../mailers/resetPassword')
 
 module.exports.SignUp = function(req,res){
     if(req.isAuthenticated()){
+        req.flash('info','You have already Signed In')
         return res.redirect('/users/profile')
     }
     return res.render('userSignUp', {title: "Sign Up"})
@@ -47,7 +49,6 @@ module.exports.create = function(req,res){
                         verifyUser.verifyUser(user,token)
                         req.flash('info','Please verify your Email-Id to signin')
                         return res.redirect('/users/signin')
-
                     }
                 })
             })
@@ -78,12 +79,58 @@ module.exports.verify = function(req,res){
                 user.confirmed=true
                 user.save()
                 await verifyToken.findOneAndDelete({token:token.token},function(err){
-                    console.log('Error in deleting token')
-                    return
+                    if(err){
+                        console.log('Error in deleting token')
+                        return
+                    }
                 })
                 req.flash('success','Your Email-Id has been verified, Please Sign In to continue')
                 return res.redirect('/users/signin')
             }
+        })
+    })
+}
+
+module.exports.resendverify = function(req,res){
+    if(req.isAuthenticated()){
+        req.flash('info','You have already Signed In')
+        return res.redirect('/users/profile')
+    }
+    return res.render('resendVerify',{title:'Email Verification'})
+}
+
+module.exports.resendverifytoken = function(req,res){
+    User.findOne({email:req.body.email},function(err,user){
+        if(err){
+            console.log('Error in finding user',err)
+            return
+        }
+        if(user.confirmed==true){
+            req.flash('info','Your Email-Id is already verified')
+            return res.redirect('/users/signin')
+        }
+        var randomtoken = randomstring.generate(32)
+        console.log('Token:',randomtoken)
+        verifyToken.findOne({email:req.body.email},function(err,requesteduser){
+            if(err){
+                console.log('Error in finding user',err)
+                return
+            }
+            if(requesteduser){
+                req.flash('info','You have already requested for verification, kindly request again after 5mintues.')
+                return res.redirect('/users/signin')
+            }
+            verifyToken.create({email:req.body.email,token:randomtoken},function(err,token){
+                if(err){
+                    console.log('Error in creating a token')
+                    return
+                }
+                if(token){
+                    resendverify.resendverify(user,token)
+                    req.flash('info','Please verify your Email-Id to signin')
+                    return res.redirect('/users/signin')
+                }
+            })
         })
     })
 }
