@@ -26,10 +26,10 @@ body{
 #wrapper h3{
     text-align: center;
 }
-.signin, .forgotpassword, .resetpassword{
+.signin, .forgotpassword, .resetpassword, .reverify{
     margin: 5%;
 }
-.signup{
+.signup, .editprofile{
     margin: 0 5%;
 }
 label{
@@ -79,7 +79,7 @@ input[type="submit"]{
 	border-radius: 15px;
 	margin-bottom: 30px;
 }
-#signin, #signup, #froget-pass{
+#signin, #signup, #froget-pass, #resendverify{
 	text-align: center;
 	margin: 0;
 	display: block;
@@ -87,7 +87,7 @@ input[type="submit"]{
 a:hover{
 	text-decoration: none;
 }
-#emailnone{
+#emailnone, #usernamenone{
 	pointer-events: none;
 }
 @media (max-width:1500px){
@@ -112,4 +112,8 @@ a:hover{
 	span#showpwd{
 		top: 42px;
 	}
+}
+#about{
+	resize: horizontal;
+	overflow-y: scroll;
 }

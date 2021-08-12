@@ -3,7 +3,6 @@ const app = express()
 const port = process.env.port || 8000
 const expressLayouts = require('express-ejs-layouts')
 const db = require('./config/mongoose')
-const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const MongoStore=require('connect-mongo')(session);
 const passport = require('passport')

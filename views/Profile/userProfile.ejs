@@ -4,11 +4,11 @@
     <div class="container">
       <div class="profile">
         <div class="profile-image">
-          <img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces">
+          <img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=250&h=250&fit=crop&crop=faces">
         </div>
         <div class="profile-user-settings">
-                  <h1 class="profile-user-name">Alan Nguyen</h1>
-                  <div class="profile-edit-btn">Edit Profile</div>
+                  <h1 class="profile-user-name"><%= profileUser.username %></h1>
+                  <div class="profile-edit-btn"><a href="/profile/edit/<%= profileUser.id %>">Edit Profile</a></div>
                   <div class="profile-settings-btn"><i class="fas fa-cog"></i></div>
               </div>
               <div class="profile-stats">
