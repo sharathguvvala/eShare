@@ -5,5 +5,6 @@ const homeController = require('../controllers/homeController')
 
 router.get('/',homeController.home)
 router.use('/users', require('./users'))
+router.use('/profile',require('./profile'))
 
 module.exports = router

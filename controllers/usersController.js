@@ -10,7 +10,7 @@ const resetPassword = require('../mailers/resetPassword')
 module.exports.SignUp = function(req,res){
     if(req.isAuthenticated()){
         req.flash('info','You have already Signed In')
-        return res.redirect('/users/profile')
+        return res.redirect('/')
     }
     return res.render('userSignUp', {title: "Sign Up",csrfToken:req.csrfToken()})
 }
@@ -18,7 +18,7 @@ module.exports.SignUp = function(req,res){
 module.exports.SignIn = function(req,res){
     if(req.isAuthenticated()){
         req.flash('info','You have already Signed In')
-        return res.redirect('/users/profile')
+        return res.redirect('/')
     }
     return res.render('userSignIn', {title:'Sign In',csrfToken:req.csrfToken()})
 }
@@ -96,7 +96,7 @@ module.exports.verify = function(req,res){
 module.exports.resendverify = function(req,res){
     if(req.isAuthenticated()){
         req.flash('info','You have already Signed In')
-        return res.redirect('/users/profile')
+        return res.redirect('/')
     }
     return res.render('resendVerify',{title:'Email Verification',csrfToken:req.csrfToken()})
 }
@@ -139,7 +139,7 @@ module.exports.resendverifytoken = function(req,res){
 
 module.exports.forgotpassword = function(req,res){
     if(req.isAuthenticated()){
-        return res.redirect('/users/profile')
+        return res.redirect('/')
     }
     return res.render('forgotPassword',{title:"Forgot Password",csrfToken:req.csrfToken()})
 }
@@ -182,7 +182,7 @@ module.exports.forgotpasswordform = function(req,res){
 
 module.exports.resetpassword = function(req,res){
     if(req.isAuthenticated()){
-        return res.redirect('/users/profile')
+        return res.redirect('/')
     }
     console.log('1',req.params.token)
     forgotPassword.findOne({token:req.params.token},function(err,token){
@@ -236,6 +236,3 @@ module.exports.Signout = function(req,res){
     return res.redirect('/')
 }
 
-module.exports.profile = function(req, res){
-    return res.render('userProfile', {title: "Profile"})
-}

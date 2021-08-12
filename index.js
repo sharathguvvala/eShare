@@ -14,8 +14,6 @@ const csrf = require('csurf')
 
 app.use(express.urlencoded());
 
-app.use(cookieParser());
-
 app.use(express.static('./assets'))
 
 app.use(expressLayouts)

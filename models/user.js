@@ -23,6 +23,9 @@ const userSchema = new mongoose.Schema({
     confirmed:{
         type:Boolean,
         default:false
+    },
+    img:{
+        type:Buffer
     }
 },{timestamps:true})
 

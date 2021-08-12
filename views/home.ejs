@@ -1,2 +1,5 @@
 <h1>eShare</h1>
 <a href="/users/signout">signout</a>
+<% if(locals.user){ %>
+    <a href="/profile/view/<%= user.id %>">profile</a>
+<% } %>
