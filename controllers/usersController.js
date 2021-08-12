@@ -171,7 +171,6 @@ module.exports.forgotpasswordform = function(req,res){
                 }
                 if(token){
                     resetPassword.resetPassword(user,token)
-                    /* resetpasswordUser(user,token) */
                     req.flash('info','Check your mail for changing the password')
                     return res.redirect('/users/signin')
                 }
