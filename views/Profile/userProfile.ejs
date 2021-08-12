@@ -4,7 +4,11 @@
     <div class="container">
       <div class="profile">
         <div class="profile-image">
-          <img src="https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=250&h=250&fit=crop&crop=faces">
+          <% if(profileUser.profileimg) { %>
+            <img src="data:image/;base64,<%=profileUser.profileimg.toString('base64')%>" alt="/img/default_profile_pic.png">
+          <% } else { %>
+            <img src="/img/default_profile_pic.png" width="200px" height="200px" alt="Profile Image">
+          <% } %>
         </div>
         <div class="profile-user-settings">
                   <h1 class="profile-user-name"><%= profileUser.username %></h1>
@@ -18,7 +22,7 @@
                   </ul>
               </div>
               <div class="profile-bio">
-                  <p><span class="profile-real-name">Jane Doe</span> Lorem ipsum dolor sit, amet consectetur adipisicing elit 📷✈️🏕️</p>
+                  <p><span class="profile-real-name"><%= profileUser.username %></span> <%= profileUser.about %></p>
               </div>
       </div>
     </div>

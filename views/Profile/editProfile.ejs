@@ -5,22 +5,17 @@
     <div class="editprofile">
         <form action="/profile/editprofile" method="POST" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="email" class="d-none">Email-Id</label>
-                <input type="hidden" id="email" name="email">
-            </div>
-            <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="usernamenone" name="username" value="<%= profileUser.username %>" readonly>
             </div>
             <div class="form-group">
                 <label for="about">About Me</label>
-                <textarea id="about" name="about" cols="24" rows="4"></textarea>
+                <textarea id="about" name="about" cols="24" rows="4" required></textarea>
             </div>
             <div class="form-group">
                 <label for="image">Profile Image</label>
-                <input type="file" id="image" name="image">
-            </div>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <input type="file" id="image" name="profileimg" required>
+            </div> 
             <div class="form-group">
                 <input type="submit" value="Submit">
             </div>

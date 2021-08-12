@@ -9,7 +9,6 @@ const passport = require('passport')
 const passportLocal = require('./config/passport-local')
 const flash = require('connect-flash')
 const middleware = require('./config/middleware')
-const csrf = require('csurf')
 
 app.use(express.urlencoded());
 
@@ -41,8 +40,6 @@ app.use(session({
         }
     )
 }))
-
-app.use(csrf())
 
 app.use(flash())
 app.use(middleware.displayFlash)
