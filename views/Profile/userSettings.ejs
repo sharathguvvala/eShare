@@ -1,1 +1,5 @@
-<p><a href="/profile/deleteaccount">Delete account</a></p>
+
+<% if(profileUser.id==user.id){ %>
+    <p><a href="/profile/deleteaccount/<%= profileUser.username %>">Delete account</a></p>
+<% } %>
+    

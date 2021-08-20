@@ -1,24 +1,26 @@
 <link rel="stylesheet" type="text/css" href="/css/authform.css">
 
-<div id="wrapper" class="container">
-    <h3>Edit Profile</h3>
-    <div class="editprofile">
-        <form action="/profile/editprofile" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="usernamenone" name="username" value="<%= (locals.user).username %>" readonly>
-            </div>
-            <div class="form-group">
-                <label for="about">About Me</label>
-                <textarea id="about" name="about" cols="24" rows="4" required></textarea>
-            </div>
-            <div class="form-group">
-                <label for="image">Profile Image</label>
-                <input type="file" id="image" name="profileimg" accept="image/png,image/jpg,image/jpeg" required>
-            </div> 
-            <div class="form-group">
-                <input type="submit" value="Submit">
-            </div>
-        </form>
-    </div>   
-</div>
+<% if(profileUser.id==user.id){ %>
+    <div id="wrapper" class="container">
+        <h3>Edit Profile</h3>
+        <div class="editprofile">
+            <form action="/profile/editprofile" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="usernamenone" name="username" value="<%= profileUser.username %>" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="about">About Me</label>
+                    <textarea id="about" name="about" cols="24" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="image">Profile Image</label>
+                    <input type="file" id="image" name="profileimg" accept="image/png,image/jpg,image/jpeg" required>
+                </div> 
+                <div class="form-group">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>   
+    </div>
+<% } %>

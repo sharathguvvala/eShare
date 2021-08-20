@@ -4,16 +4,20 @@
     <div class="container">
       <div class="profile">
         <div class="profile-image">
-          <% if((locals.user).profileimg) { %>
-            <img src="data:image/;base64,<%=(locals.user).profileimg.toString('base64')%>" alt="/img/default_profile_pic.png">
+          <% if(user.profileimg) { %>
+            <img src="data:image/;base64,<%=user.profileimg.toString('base64')%>" alt="/img/default_profile_pic.png">
           <% } else { %>
             <img src="/img/default_profile_pic.png" width="200px" height="200px" alt="Profile Image">
           <% } %>
         </div>
         <div class="profile-user-settings">
-                  <h1 class="profile-user-name"><%= (locals.user).username %></h1>
-                  <div class="profile-edit-btn"><a href="/profile/edit">Edit Profile</a></div>
-                  <div class="profile-settings-btn"><a href="/profile/settings"><i class="fas fa-cog"></i></a></div>
+                  <h1 class="profile-user-name"><%= user.username %></h1>
+                  <% if(profileUser.id==user.id){ %>
+                    <div class="profile-edit-btn"><a href="/profile/edit/<%= profileUser.username %>">Edit Profile</a></div>
+                    <div class="profile-settings-btn"><a href="/profile/settings/<%= profileUser.username %>"><i class="fas fa-cog"></i></a></div>
+                  <% } else{ %>
+                    <a href="">add freind</a>
+                  <% } %>
               </div>
               <div class="profile-stats">
                   <ul>
@@ -22,7 +26,7 @@
                   </ul>
               </div>
               <div class="profile-bio">
-                  <p><span class="profile-real-name"><%= (locals.user).username %></span> <%= (locals.user).about %></p>
+                  <p><span class="profile-real-name"><%= user.username %></span> <%= user.about %></p>
               </div>
       </div>
     </div>

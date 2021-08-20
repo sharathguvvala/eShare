@@ -1,5 +1,15 @@
 <h1>eShare</h1>
 <a href="/users/signout">signout</a>
 <% if(locals.user){ %>
-    <a href="/profile/view">profile</a>
+    <a href="/profile/<%= user.username %>">profile</a>
 <% } %>
+
+<section id="user-friends">
+    <h4>Friends</h4>
+    <% for(user of users){ %>
+        <p>
+            <a href="/profile/<%= user.username %>"><%= user.username %></a>
+        </p>
+    <% } %>
+
+</section>
