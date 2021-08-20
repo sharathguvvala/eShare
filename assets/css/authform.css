@@ -26,7 +26,7 @@ body{
 #wrapper h3{
     text-align: center;
 }
-.signin, .forgotpassword, .resetpassword, .reverify{
+.signin, .forgotpassword, .resetpassword, .reverify, .deleteaccount{
     margin: 5%;
 }
 .signup, .editprofile{

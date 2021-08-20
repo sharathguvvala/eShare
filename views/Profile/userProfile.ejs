@@ -4,25 +4,25 @@
     <div class="container">
       <div class="profile">
         <div class="profile-image">
-          <% if(profileUser.profileimg) { %>
-            <img src="data:image/;base64,<%=profileUser.profileimg.toString('base64')%>" alt="/img/default_profile_pic.png">
+          <% if((locals.user).profileimg) { %>
+            <img src="data:image/;base64,<%=(locals.user).profileimg.toString('base64')%>" alt="/img/default_profile_pic.png">
           <% } else { %>
             <img src="/img/default_profile_pic.png" width="200px" height="200px" alt="Profile Image">
           <% } %>
         </div>
         <div class="profile-user-settings">
-                  <h1 class="profile-user-name"><%= profileUser.username %></h1>
-                  <div class="profile-edit-btn"><a href="/profile/edit/<%= profileUser.id %>">Edit Profile</a></div>
-                  <div class="profile-settings-btn"><i class="fas fa-cog"></i></div>
+                  <h1 class="profile-user-name"><%= (locals.user).username %></h1>
+                  <div class="profile-edit-btn"><a href="/profile/edit">Edit Profile</a></div>
+                  <div class="profile-settings-btn"><a href="/profile/settings"><i class="fas fa-cog"></i></a></div>
               </div>
               <div class="profile-stats">
                   <ul>
-                      <li><span class="profile-stat-count">164</span> posts</li>
-                      <li><span class="profile-stat-count">188</span> followers</li>
+                      <li><span class="profile-stat-count">164</span>Posts</li>
+                      <li><span class="profile-stat-count">188</span>Friends</li>
                   </ul>
               </div>
               <div class="profile-bio">
-                  <p><span class="profile-real-name"><%= profileUser.username %></span> <%= profileUser.about %></p>
+                  <p><span class="profile-real-name"><%= (locals.user).username %></span> <%= (locals.user).about %></p>
               </div>
       </div>
     </div>
