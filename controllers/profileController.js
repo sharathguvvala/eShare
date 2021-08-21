@@ -1,6 +1,5 @@
 const User = require('../models/user')
 const Product = require('../models/product')
-const multer = require('multer')
 const sharp = require('sharp')
 const bcrypt = require('bcrypt')
 
@@ -28,19 +27,6 @@ module.exports.edit = function(req,res){
         return res.render('Profile/editProfile',{title:'Edit Profile',profileUser:user})
     })
 }
-
-module.exports.upload = multer({
-    limits:{
-        fileSize:16000000
-    },
-    fileFilter(req,file,cb){
-        if(!(file.originalname.match(/(.png|.jpg|.jpeg)/))){
-            /* return req.flash('info','Supported image format is png/jpg/jpeg') */
-            cb(new Error('Supported image format is png/jpg/jpeg'))
-        }
-        cb(null,true)
-    }
-})
 
 module.exports.editprofile = async function(req,res){
     const buffer = await sharp(req.file.buffer).resize({width:200,height:200}).png().toBuffer()
