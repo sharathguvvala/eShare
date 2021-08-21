@@ -82,6 +82,6 @@ module.exports.deleteaccountform = function(req,res){
         }
         await User.findOneAndDelete({email:req.body.email})
         req.flash('info','Your account is deactivated')
-        return res.redirect('/users/signin')
+        return res.redirect('/user/signin')
     })
 }

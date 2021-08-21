@@ -49,14 +49,14 @@ module.exports.create = function(req,res){
                     if(token){
                         verifyUser.verifyUser(user,token)
                         req.flash('info','Please verify your Email-Id to signin')
-                        return res.redirect('/users/signin')
+                        return res.redirect('/user/signin')
                     }
                 })
             })
         }
         else{
             req.flash('error','Username / Email-Id already exists')
-            return res.redirect('/users/signup')
+            return res.redirect('/user/signup')
         }
     })
 }
@@ -70,7 +70,7 @@ module.exports.verify = function(req,res){
         }
         if(!token){
             ReadableStream.flash('info','Link has expired, kindly request again.')
-            return res.redirect('/users/resendverify')
+            return res.redirect('/user/resendverify')
         }
         User.findOne({email:token.email},async function(err,user){
             if(err){
@@ -87,7 +87,7 @@ module.exports.verify = function(req,res){
                     }
                 })
                 req.flash('success','Your Email-Id has been verified, Please Sign In to continue')
-                return res.redirect('/users/signin')
+                return res.redirect('/user/signin')
             }
         })
     })
@@ -109,7 +109,7 @@ module.exports.resendverifytoken = function(req,res){
         }
         if(user.confirmed==true){
             req.flash('info','Your Email-Id is already verified')
-            return res.redirect('/users/signin')
+            return res.redirect('/user/signin')
         }
         var randomtoken = randomstring.generate(32)
         console.log('Token:',randomtoken)
@@ -120,7 +120,7 @@ module.exports.resendverifytoken = function(req,res){
             }
             if(requesteduser){
                 req.flash('info','You have already requested for verification, kindly request again after 5mintues.')
-                return res.redirect('/users/signin')
+                return res.redirect('/user/signin')
             }
             verifyToken.create({email:req.body.email,token:randomtoken},function(err,token){
                 if(err){
@@ -130,7 +130,7 @@ module.exports.resendverifytoken = function(req,res){
                 if(token){
                     resendverify.resendverify(user,token)
                     req.flash('info','Please verify your Email-Id to signin')
-                    return res.redirect('/users/signin')
+                    return res.redirect('/user/signin')
                 }
             })
         })
@@ -152,7 +152,7 @@ module.exports.forgotpasswordform = function(req,res){
         }
         if(!user){
             req.flash('info','No user exists with the Email-Id')
-            return res.redirect('/users/forgotPassword')
+            return res.redirect('/user/forgotPassword')
         }
         var randomtoken = randomstring.generate(64)
         console.log('2',randomtoken)
@@ -163,7 +163,7 @@ module.exports.forgotpasswordform = function(req,res){
             }
             if(requesteduser){
                 req.flash('info','Already requested for reset password, kindly wait and request after 5 min')
-                return res.redirect('/users/signin')
+                return res.redirect('/user/signin')
             }
             forgotPassword.create({email:req.body.email,token:randomtoken},function(err,token){
                 if(err){
@@ -172,7 +172,7 @@ module.exports.forgotpasswordform = function(req,res){
                 if(token){
                     resetPassword.resetPassword(user,token)
                     req.flash('info','Check your mail for changing the password')
-                    return res.redirect('/users/signin')
+                    return res.redirect('/user/signin')
                 }
             })
         })
@@ -220,7 +220,7 @@ module.exports.resetpasswordform = function(req,res){
                     }
                 })
                 req.flash('success','Your Password has been changed, Please Sign In to continue')
-                return res.redirect('/users/signin')
+                return res.redirect('/user/signin')
             })
         }
     })
