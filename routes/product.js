@@ -4,7 +4,6 @@ const passport = require('passport')
 const middleware = require('../config/middleware')
 
 const productController = require('../controllers/productController')
-const profileController = require('../controllers/profileController')
 
 router.post('/add',passport.checkAuth,(middleware.upload).single('productImg'),productController.add)
 
