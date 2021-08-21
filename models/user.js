@@ -29,7 +29,13 @@ const userSchema = new mongoose.Schema({
     },
     profileimg:{
         type:Buffer
-    }
+    },
+    products:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'Product'
+        }
+    ]
 },{timestamps:true})
 
 userSchema.pre('save',async function(next){

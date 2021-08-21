@@ -1,16 +1,19 @@
 const User = require('../models/user')
+const Product = require('../models/product')
 const multer = require('multer')
 const sharp = require('sharp')
 const bcrypt = require('bcrypt')
 
-module.exports.view = function(req,res){
-    User.findOne({username:req.params.username},function(err,user){
-        if(err){
-            console.log('Error in finding user',err)
-            return
-        }
-        return res.render('Profile/userProfile',{title:'Profile',profileUser:user})
-    })
+module.exports.view = async function(req,res){
+    try{
+        let user = await User.findOne({username:req.params.username})
+        let products = await Product.find({user:user._id})
+        return res.render('Profile/userProfile',{title:'Profile',profileUser:user,products:products})
+    }
+    catch(err){
+        console.log('Error',err)
+        return
+    }
 }
 
 module.exports.edit = function(req,res){
@@ -20,7 +23,6 @@ module.exports.edit = function(req,res){
             return
         }
         if(user.id!==req.user.id){
-            req.flash('error','You dont have authorization to that page.')
             return res.redirect('back')
         }
         return res.render('Profile/editProfile',{title:'Edit Profile',profileUser:user})
@@ -63,7 +65,6 @@ module.exports.settings = function(req,res){
             return
         }
         if(user.id!==req.user.id){
-            req.flash('error','You dont have authorization to that page.')
             return res.redirect('back')
         }
         return res.render('Profile/userSettings',{title:'Profile Settings',profileUser:user})
@@ -77,7 +78,6 @@ module.exports.deleteaccount = function(req,res){
             return
         }
         if(user.id!==req.user.id){
-            req.flash('error','You dont have authorization to that page.')
             return res.redirect('edit')
         }
         return res.render('Profile/deleteAccount',{title:'Delete Account',csrfToken:req.csrfToken(),profileUser:user})

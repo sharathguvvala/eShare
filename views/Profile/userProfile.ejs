@@ -4,14 +4,14 @@
     <div class="container">
       <div class="profile">
         <div class="profile-image">
-          <% if(user.profileimg) { %>
-            <img src="data:image/;base64,<%=user.profileimg.toString('base64')%>" alt="/img/default_profile_pic.png">
+          <% if(profileUser.profileimg) { %>
+            <img src="data:image/;base64,<%=profileUser.profileimg.toString('base64')%>" alt="/img/default_profile_pic.png">
           <% } else { %>
             <img src="/img/default_profile_pic.png" width="200px" height="200px" alt="Profile Image">
           <% } %>
         </div>
         <div class="profile-user-settings">
-                  <h1 class="profile-user-name"><%= user.username %></h1>
+                  <h1 class="profile-user-name"><%= profileUser.username %></h1>
                   <% if(profileUser.id==user.id){ %>
                     <div class="profile-edit-btn"><a href="/profile/edit/<%= profileUser.username %>">Edit Profile</a></div>
                     <div class="profile-settings-btn"><a href="/profile/settings/<%= profileUser.username %>"><i class="fas fa-cog"></i></a></div>
@@ -26,8 +26,82 @@
                   </ul>
               </div>
               <div class="profile-bio">
-                  <p><span class="profile-real-name"><%= user.username %></span> <%= user.about %></p>
+                  <p><span class="profile-real-name"><%= profileUser.username %></span> <%= profileUser.about %></p>
               </div>
       </div>
     </div>
 </header>
+
+<% if(profileUser.id==user.id){ %>
+  <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Add new Product</h2>
+            <form action="/product/add" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="productTitle">Product Title</label>
+                    <input type="text" name="productTitle" class="form-control" required>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label for="productImg">Product Image</label>
+                            <div class="input-group">
+                                <input type="file" name="productImg" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group">
+                            <label for="productPrice">Product Price</label>
+                            <div class="input-group">
+                                <input type="text" name="productPrice" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                      <div class="form-group">
+                          <div class="checkbox">
+                            <br/><label><input type="checkbox" name="productAvail" checked> Is available</label>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="productDesc">Product Description</label>
+                    <textarea name="productDesc" class="form-control"></textarea>
+                </div>
+               <button type="submit" class="btn btn-success">Add Product</button>
+            </form>
+        </div>
+    </div>
+  </div>
+<% } %>
+
+<div class="shopping-cart">
+  <% for(product of products){ %>
+    <div class="product">
+      <div class="product-image">
+        <img src="data:image/;base64,<%=product.productImg.toString('base64')%>" alt="Product Image">
+      </div>
+      <div class="product-details">
+        <div class="product-title"><%= product.productTitle %></div>
+        <p class="product-description"><%= product.productDesc %></p>
+      </div>
+      <div class="product-price"><%= product.productPrice %></div>
+      <div class="product-availability">
+        <% if(product.productAvail==true){ %>
+          <p>In Stock</p>
+        <% } else{ %>
+          <p>Out of Stock</p>
+        <% } %>
+      </div>
+      <div class="product-edit">
+        <button class="edit-product">Edit</button>
+      </div>
+      <div class="product-removal">
+        <button class="remove-product">Remove</button>
+      </div>
+    </div>
+  <% } %>
+</div>
